@@ -27,7 +27,7 @@ jobs:
         id: set-tag
         run: |
           TAG_NAME="${GITHUB_REF#refs/tags/}"
-          gh release create "$TAG_NAME" --draft --title "$TAG_NAME" --generate-notes
+          gh release view "$TAG_NAME" > /dev/null 2>&1 || gh release create "$TAG_NAME" --draft --title "$TAG_NAME" --generate-notes
           echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
 
   build-android:
@@ -47,8 +47,9 @@ jobs:
 
       - name: Clone Android repo
         run: |
-          git clone https://codeberg.org/clipshift/android.git
+          git clone --depth 1 https://codeberg.org/clipshift/android.git
           cd android
+          git fetch --depth 1 origin tag "$TAG_NAME" 2>/dev/null || true
           if git checkout "$TAG_NAME" 2>/dev/null; then
             echo "Checked out tag $TAG_NAME"
           else
@@ -77,7 +78,7 @@ jobs:
 
       - name: Build release APK
         working-directory: android
-        run: task build:release:ci "SDK_PATH=$ANDROID_HOME/build-tools/36.1.0"
+        run: task build:release:ci SDK_PATH="$ANDROID_HOME/build-tools/36.1.0"
 
       - name: Upload APKs
         working-directory: android
@@ -101,8 +102,9 @@ jobs:
 
       - name: Clone desktop repo
         run: |
-          git clone https://codeberg.org/clipshift/desktop.git
+          git clone --depth 1 https://codeberg.org/clipshift/desktop.git
           cd desktop
+          git fetch --depth 1 origin tag "$TAG_NAME" 2>/dev/null || true
           if git checkout "$TAG_NAME" 2>/dev/null; then
             echo "Checked out tag $TAG_NAME"
           else
@@ -150,8 +152,9 @@ jobs:
 
       - name: Clone desktop repo
         run: |
-          git clone https://codeberg.org/clipshift/desktop.git
+          git clone --depth 1 https://codeberg.org/clipshift/desktop.git
           cd desktop
+          git fetch --depth 1 origin tag "$TAG_NAME" 2>/dev/null || true
           if git checkout "$TAG_NAME" 2>/dev/null; then
             echo "Checked out tag $TAG_NAME"
           else
@@ -193,8 +196,9 @@ jobs:
       - name: Clone desktop repo
         shell: bash
         run: |
-          git clone https://codeberg.org/clipshift/desktop.git
+          git clone --depth 1 https://codeberg.org/clipshift/desktop.git
           cd desktop
+          git fetch --depth 1 origin tag "$TAG_NAME" 2>/dev/null || true
           if git checkout "$TAG_NAME" 2>/dev/null; then
             echo "Checked out tag $TAG_NAME"
           else

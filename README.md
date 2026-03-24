@@ -12,6 +12,8 @@ ClipSHIFT is a clipboard synchronization tool that keeps your clipboard in sync 
 
 Download the latest release from the [Releases page](https://github.com/getclipshift/builder/releases).
 
+> Releases are published as drafts until manually promoted. Once all build artifacts are attached, the maintainer promotes the draft to a public release.
+
 ### Android
 
 Download `clipshift.apk` and install it on your device. You may need to enable "Install from unknown sources" in your device settings.
