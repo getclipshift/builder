@@ -51,6 +51,8 @@ jobs:
       - name: Set Gradle JDK
         run: echo "GRADLE_OPTS=-Dorg.gradle.java.home=$JAVA_HOME" >> $GITHUB_ENV
       - uses: arduino/setup-task@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clone Android repo
         run: |
@@ -109,6 +111,8 @@ jobs:
         with:
           node-version: '24'
       - uses: arduino/setup-task@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clone desktop repo
         run: |
@@ -204,6 +208,8 @@ jobs:
         with:
           node-version: '24'
       - uses: arduino/setup-task@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clone desktop repo
         shell: bash
