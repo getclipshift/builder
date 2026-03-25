@@ -91,7 +91,8 @@ jobs:
       - name: Upload APKs
         working-directory: android
         run: |
-          gh release upload "$TAG_NAME" app/build/outputs/apk/debug/app-debug.apk --name clipshift-debug.apk --repo "$GITHUB_REPOSITORY" --clobber
+          cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/clipshift-debug.apk
+          gh release upload "$TAG_NAME" app/build/outputs/apk/debug/clipshift-debug.apk --repo "$GITHUB_REPOSITORY" --clobber
           gh release upload "$TAG_NAME" app/build/outputs/apk/release/clipshift.apk --repo "$GITHUB_REPOSITORY" --clobber
 
   build-macos:
