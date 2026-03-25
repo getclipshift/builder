@@ -36,6 +36,7 @@ jobs:
     timeout-minutes: 30
     env:
       TAG_NAME: ${{ needs.create-release.outputs.tag_name }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
       KEYSTORE_PATH: clipshift-release-key.jks
       KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -58,7 +59,8 @@ jobs:
           fi
 
       - name: Install Android build-tools
-        run: sdkmanager "build-tools;36.1.0"
+        run: |
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;36.1.0"
 
       - name: Decode keystore
         run: echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/clipshift-release-key.jks
@@ -83,8 +85,8 @@ jobs:
       - name: Upload APKs
         working-directory: android
         run: |
-          gh release upload "$TAG_NAME" app/build/outputs/apk/debug/app-debug.apk --name clipshift-debug.apk --clobber
-          gh release upload "$TAG_NAME" app/build/outputs/apk/release/clipshift.apk --clobber
+          gh release upload "$TAG_NAME" app/build/outputs/apk/debug/app-debug.apk --name clipshift-debug.apk --repo "$GITHUB_REPOSITORY" --clobber
+          gh release upload "$TAG_NAME" app/build/outputs/apk/release/clipshift.apk --repo "$GITHUB_REPOSITORY" --clobber
 
   build-macos:
     needs: create-release
@@ -92,6 +94,7 @@ jobs:
     timeout-minutes: 60
     env:
       TAG_NAME: ${{ needs.create-release.outputs.tag_name }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -127,7 +130,7 @@ jobs:
 
       - name: Upload DMG
         working-directory: desktop
-        run: gh release upload "$TAG_NAME" src-tauri/target/release/bundle/dmg/*.dmg --clobber
+        run: gh release upload "$TAG_NAME" src-tauri/target/release/bundle/dmg/*.dmg --repo "$GITHUB_REPOSITORY" --clobber
 
   build-linux:
     needs: create-release
@@ -135,6 +138,7 @@ jobs:
     timeout-minutes: 60
     env:
       TAG_NAME: ${{ needs.create-release.outputs.tag_name }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -177,7 +181,7 @@ jobs:
 
       - name: Upload AppImage
         working-directory: desktop
-        run: gh release upload "$TAG_NAME" src-tauri/target/release/bundle/appimage/*.AppImage --clobber
+        run: gh release upload "$TAG_NAME" src-tauri/target/release/bundle/appimage/*.AppImage --repo "$GITHUB_REPOSITORY" --clobber
 
   build-windows:
     needs: create-release
@@ -185,6 +189,7 @@ jobs:
     timeout-minutes: 60
     env:
       TAG_NAME: ${{ needs.create-release.outputs.tag_name }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -224,5 +229,5 @@ jobs:
         working-directory: desktop
         shell: bash
         run: |
-          gh release upload "$TAG_NAME" src-tauri/target/release/bundle/nsis/*.exe --clobber
-          gh release upload "$TAG_NAME" src-tauri/target/release/clipshift-desktop.exe --clobber
+          gh release upload "$TAG_NAME" src-tauri/target/release/bundle/nsis/*.exe --repo "$GITHUB_REPOSITORY" --clobber
+          gh release upload "$TAG_NAME" src-tauri/target/release/clipshift-desktop.exe --repo "$GITHUB_REPOSITORY" --clobber
