@@ -16,6 +16,8 @@ Download the latest release from the [Releases page](https://github.com/getclips
 
 ### Android
 
+Make sure you first have the ntfy.sh app installed as ClipSHIFT utilizes it for push notifications. Setup your subscription to the clipshift topic in there, make sure "Broadcast messages" is enabled in the settings, and I suggest you mute the clipshift topic.
+
 Download `clipshift.apk` and install it on your device. You may need to enable "Install from unknown sources" in your device settings.
 
 **Auto-updates with Obtainium:**
