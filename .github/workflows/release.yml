@@ -158,9 +158,6 @@ jobs:
           node-version: '24'
       - uses: arduino/setup-task@v2
 
-      - name: Install Tauri system dependencies
-        run: task deps:ubuntu
-
       - name: Clone desktop repo
         run: |
           git clone --depth 1 https://codeberg.org/clipshift/desktop.git
@@ -181,6 +178,10 @@ jobs:
             ~/.cargo/git
           key: cargo-linux-${{ hashFiles('desktop/src-tauri/Cargo.lock') }}
           restore-keys: cargo-linux-
+
+      - name: Install Tauri system dependencies
+        working-directory: desktop
+        run: task deps:ubuntu
 
       - name: Build Linux AppImage
         working-directory: desktop
