@@ -137,7 +137,7 @@ jobs:
 
       - name: Build macOS DMG
         working-directory: desktop
-        run: task build:macos
+        run: task build
 
       - name: Upload DMG
         working-directory: desktop
@@ -159,11 +159,7 @@ jobs:
       - uses: arduino/setup-task@v2
 
       - name: Install Tauri system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libwebkit2gtk-4.1-dev build-essential curl wget file \
-            libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+        run: task deps:ubuntu
 
       - name: Clone desktop repo
         run: |
@@ -188,7 +184,7 @@ jobs:
 
       - name: Build Linux AppImage
         working-directory: desktop
-        run: task build:linux:native
+        run: task build
 
       - name: Upload AppImage
         working-directory: desktop
@@ -236,7 +232,7 @@ jobs:
       - name: Build Windows NSIS
         working-directory: desktop
         shell: bash
-        run: task build:windows:native
+        run: task build
 
       - name: Upload Windows artifacts
         working-directory: desktop
