@@ -84,11 +84,11 @@ jobs:
 
       - name: Build debug APK
         working-directory: android
-        run: task build
+        run: task --yes build
 
       - name: Build release APK
         working-directory: android
-        run: task build:release:ci SDK_PATH="$ANDROID_HOME/build-tools/36.1.0"
+        run: task --yes build:release:ci SDK_PATH="$ANDROID_HOME/build-tools/36.1.0"
 
       - name: Upload APKs
         working-directory: android
@@ -137,7 +137,7 @@ jobs:
 
       - name: Build macOS DMG
         working-directory: desktop
-        run: task build
+        run: task --yes build
 
       - name: Upload DMG
         working-directory: desktop
@@ -181,11 +181,11 @@ jobs:
 
       - name: Install Tauri system dependencies
         working-directory: desktop
-        run: task deps:ubuntu
+        run: task --yes deps:ubuntu
 
       - name: Build Linux AppImage
         working-directory: desktop
-        run: task build
+        run: task --yes build
 
       - name: Upload AppImage
         working-directory: desktop
@@ -233,7 +233,7 @@ jobs:
       - name: Build Windows NSIS
         working-directory: desktop
         shell: bash
-        run: task build
+        run: task --yes build
 
       - name: Upload Windows artifacts
         working-directory: desktop
