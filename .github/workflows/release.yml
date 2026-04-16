@@ -111,6 +111,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@main
       - uses: arduino/setup-task@v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -135,6 +138,10 @@ jobs:
             ~/.cargo/git
           key: cargo-macos-${{ hashFiles('desktop/src-tauri/Cargo.lock') }}
           restore-keys: cargo-macos-
+
+      - name: Install Tauri build dependencies
+        working-directory: desktop
+        run: task --yes deps:macos
 
       - name: Build macOS DMG
         working-directory: desktop
@@ -230,6 +237,13 @@ jobs:
             ~/.cargo/git
           key: cargo-windows-${{ hashFiles('desktop/src-tauri/Cargo.lock') }}
           restore-keys: cargo-windows-
+
+      - name: Install Tauri build dependencies
+        working-directory: desktop
+        run: task --yes deps:windows
+  
+      - name: Set VCPKG_ROOT
+        run: echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" >> $env:GITHUB_ENV
 
       - name: Build Windows NSIS
         working-directory: desktop
